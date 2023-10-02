@@ -13,13 +13,13 @@ class GildedRoseTest {
 
   @Test
   @DisplayName("Check that the quality updates correctly before the sellIn.")
-  void testQualityUpdateBeforeSellIn() {
+  void testQualityUpdateBeforeSellIn() throws Exception {
     Item[] list;
     list = new Item[] {
-      new Item("Aged Brie", 20, 30),
-      new Item("Backstage passes to a TAFKAL80ETC concert", 4, 48),
-      new Item("Sulfuras, Hand of Ragnaros", 79, 80),
-      new Item("Conjured", 50, 23)
+      new AgedBrie(20, 30),
+      new BackstagePasses(4, 48),
+      new Sulfuras(79, 80),
+      new Conjured(50, 23)
     };
 
     GildedRose app = new GildedRose(list);
@@ -54,10 +54,10 @@ class GildedRoseTest {
 
   @Test
   @DisplayName("Negative Sulfuras.")
-  void missed(){
+  void missed() throws Exception {
     Item[] list;
     list = new Item[] {
-      new Item("Sulfuras, Hand of Ragnaros", -1, -1)
+      new Sulfuras( -1, -1)
     };
 
     GildedRose app = new GildedRose(list);
@@ -75,13 +75,13 @@ class GildedRoseTest {
 
   @Test
   @DisplayName("Check how the max quality.")
-  void testMaxQuality() {
+  void testMaxQuality() throws Exception {
     Item[] list;
     list = new Item[] {
-      new Item("Aged Brie", 20, 30),
-      new Item("Backstage passes to a TAFKAL80ETC concert", 20, 30),
-      new Item("Sulfuras, Hand of Ragnaros", 20, 80),
-      new Item("Conjured", 20, 23)
+      new AgedBrie( 20, 30),
+      new BackstagePasses(20, 30),
+      new Sulfuras(20, 80),
+      new Conjured(20, 23)
     };
 
     GildedRose app = new GildedRose(list);
@@ -100,13 +100,13 @@ class GildedRoseTest {
 
   @Test
   @DisplayName("Check that the initial quality corresponds to the specifications.")
-  void testDefaultQuality() {
+  void testDefaultQuality() throws Exception {
     Item[] list;
     list = new Item[] {
-      new Item("Aged Brie", 20, 60),
-      new Item("Backstage passes to a TAFKAL80ETC concert", 20, 60),
-      new Item("Sulfuras, Hand of Ragnaros", -20, -90),
-      new Item("Conjured", 20, 60)
+      new AgedBrie( 20, 60),
+      new BackstagePasses( 20, 60),
+      new Sulfuras( -20, -90),
+      new Conjured( 20, 60)
     };
 
     GildedRose app = new GildedRose(list);
@@ -125,13 +125,13 @@ class GildedRoseTest {
 
   @Test
   @DisplayName("Check how the quality updates after the sellIn.")
-  void testQualityAfterSellIn() {
+  void testQualityAfterSellIn() throws Exception {
     Item[] list;
     list = new Item[] {
-      new Item("Aged Brie", 0, 30),
-      new Item("Backstage passes to a TAFKAL80ETC concert", 10, 49),
-      new Item("Sulfuras, Hand of Ragnaros", -10, 80),
-      new Item("Conjured", 0, 50)
+      new AgedBrie(0, 30),
+      new BackstagePasses(10, 49),
+      new Sulfuras(-10, 80),
+      new Conjured(0, 50)
     };
 
     GildedRose app = new GildedRose(list);
@@ -154,8 +154,8 @@ class GildedRoseTest {
 
   @Test
   @DisplayName("Check that Item.toString() works.")
-  void testToString() {
-    Item i = new Item("Aged Brie", 10, 30);
+  void testToString() throws Exception {
+    Item i = new AgedBrie(10, 30);
     assertEquals("Aged Brie, 10, 30", i.toString());
   }
 }

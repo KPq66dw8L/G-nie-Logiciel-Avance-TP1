@@ -13,6 +13,7 @@ repositories {
 }
 
 dependencies {
+  implementation("org.hamcrest:hamcrest:2.2")
   testImplementation("org.hamcrest:hamcrest:2.2")
   testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
   testImplementation("org.pitest:pitest-junit5-plugin:1.2.0")
