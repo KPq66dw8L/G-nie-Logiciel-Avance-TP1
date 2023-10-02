@@ -150,6 +150,19 @@ class GildedRoseTest {
     assertThat("Backstage quality updated correctly after sellIn.", app.items[1].quality, is(equalTo(quality_backstage)));
     assertThat("Sulfuras quality updated correctly after sellIn.", app.items[2].quality, is(equalTo(80)));
     assertThat("Conjured quality updated correctly after sellIn.", app.items[3].quality, is(equalTo(quality_conjured)));
+
+    list = new Item[] {
+      new AgedBrie(0, 30)
+    };
+    app = new GildedRose(list);
+    nbjours = 5;
+    quality_agedBrie = Math.min(app.items[0].quality + ((nbjours-app.items[0].sellIn)*2), 50);
+
+    for (int i=0; i < nbjours; i++){
+      app.updateQuality();
+    }
+
+    assertThat("Aged brie quality updated correctly after sellIn.", app.items[0].quality, is(equalTo(quality_agedBrie)));
   }
 
   @Test
