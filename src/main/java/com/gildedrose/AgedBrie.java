@@ -8,11 +8,12 @@ import static org.hamcrest.Matchers.not;
 public class AgedBrie extends Item{
   public AgedBrie(int sellIn, int quality) throws Exception {
     super("Aged Brie", sellIn, quality);
-    try {
-      assertThat("Quality must be positive.", quality>=0);
-    } catch (Exception e){
-      throw new Exception("Quality must be positive.");
-    }
+    //TODO
+    //    try {
+    //      assertThat("Quality must be positive.", quality>=0);
+    //    } catch (Exception e){
+    //      throw new Exception("Quality must be positive.");
+    //    }
   }
 
   @Override
