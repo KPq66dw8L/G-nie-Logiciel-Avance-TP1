@@ -15,13 +15,15 @@ public class AgedBrie extends Item{
     //      throw new Exception("Quality must be positive.");
     //    }
   }
-
+  //TODO: corriger mutations
   @Override
   public void updateQuality(){
-    if (this.sellIn > 0){
-      this.quality ++;
-    } else{
-      this.quality += 2;
+    if (quality < 50){
+      if (this.sellIn >= 0){
+        this.quality ++;
+      } else{
+        this.quality = Math.min(this.quality+2, 50);
+      }
     }
   }
 }

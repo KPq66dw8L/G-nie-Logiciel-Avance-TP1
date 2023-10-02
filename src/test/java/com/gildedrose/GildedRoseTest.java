@@ -18,7 +18,7 @@ class GildedRoseTest {
     list = new Item[] {
       new AgedBrie(20, 30),
       new BackstagePasses(4, 48),
-      new Sulfuras(79, 80),
+      new Sulfuras(),
       new Conjured(50, 23)
     };
 
@@ -29,10 +29,10 @@ class GildedRoseTest {
     // Calcul des valeurs correctes selon la documentation
     int quality_agedBrie = app.items[0].quality + nbjours;
     int quality_backstage = app.items[1].quality;
-    int quality_conjured = app.items[3].quality - nbjours;
+    int quality_conjured = Math.max(app.items[3].quality - (nbjours*2), 0);
 
     for (int i=0; i < nbjours; i++){
-      app.updateQuality();
+      app.toNextDay();
       // Mise à jour de la qualité de backstage dans une variable locale, selon les infos de la doc
       if (app.items[1].sellIn >= 10) {
         quality_backstage += 1;
@@ -57,18 +57,18 @@ class GildedRoseTest {
   void missed() throws Exception {
     Item[] list;
     list = new Item[] {
-      new Sulfuras( -1, -1)
+      new Sulfuras()
     };
 
     GildedRose app = new GildedRose(list);
     int nbjours = 20;
 
     for (int i=0; i < nbjours; i++){
-      app.updateQuality();
+      app.toNextDay();
     }
 
     //TODO: sulfuras quality neg doit renvoyer une erreur
-    // assertThrows(IllegalAccessException.class, () -> app.updateQuality(), "");
+    // assertThrows(IllegalAccessException.class, () -> app.toNextDay();(), "");
 
 
   }
@@ -80,7 +80,7 @@ class GildedRoseTest {
     list = new Item[] {
       new AgedBrie( 20, 30),
       new BackstagePasses(20, 30),
-      new Sulfuras(20, 80),
+      new Sulfuras(),
       new Conjured(20, 23)
     };
 
@@ -88,7 +88,7 @@ class GildedRoseTest {
     int nbjours = 20;
 
     for (int i=0; i < nbjours; i++){
-      app.updateQuality();
+      app.toNextDay();
     }
 
     // Vérification des valeurs
@@ -105,7 +105,7 @@ class GildedRoseTest {
     list = new Item[] {
       new AgedBrie( 20, 60),
       new BackstagePasses( 20, 60),
-      new Sulfuras( -20, -90),
+      new Sulfuras(),
       new Conjured( 20, 60)
     };
 
@@ -113,7 +113,7 @@ class GildedRoseTest {
     int nbjours = 1;
 
     for (int i=0; i < nbjours; i++){
-      app.updateQuality();
+      app.toNextDay();
     }
 
     // TODO
@@ -128,10 +128,10 @@ class GildedRoseTest {
   void testQualityAfterSellIn() throws Exception {
     Item[] list;
     list = new Item[] {
-      new AgedBrie(0, 30),
-      new BackstagePasses(10, 49),
-      new Sulfuras(-10, 80),
-      new Conjured(0, 50)
+      new AgedBrie(-1, 30),
+      new BackstagePasses(-10, 49),
+      new Sulfuras(),
+      new Conjured(-1, 50)
     };
 
     GildedRose app = new GildedRose(list);
@@ -140,10 +140,10 @@ class GildedRoseTest {
 
     int quality_agedBrie = Math.min(app.items[0].quality + ((nbjours-app.items[0].sellIn)*2), 50);
     int quality_backstage = 0;
-    int quality_conjured = Math.max(app.items[3].quality - ((nbjours-app.items[3].sellIn)*2), 0);
+    int quality_conjured = Math.max(app.items[3].quality - ((nbjours-app.items[3].sellIn)*4), 0);
 
     for (int i=0; i < nbjours; i++){
-      app.updateQuality();
+      app.toNextDay();
     }
 
     assertThat("Aged brie quality updated correctly after sellIn.", app.items[0].quality, is(equalTo(quality_agedBrie)));
@@ -152,17 +152,17 @@ class GildedRoseTest {
     assertThat("Conjured quality updated correctly after sellIn.", app.items[3].quality, is(equalTo(quality_conjured)));
 
     list = new Item[] {
-      new AgedBrie(0, 30)
+      new AgedBrie(-1, 30)
     };
     app = new GildedRose(list);
     nbjours = 5;
-    quality_agedBrie = Math.min(app.items[0].quality + ((nbjours-app.items[0].sellIn)*2), 50);
+    quality_agedBrie = Math.min(app.items[0].quality + (nbjours*2), 50);
 
     for (int i=0; i < nbjours; i++){
-      app.updateQuality();
+      app.toNextDay();
     }
 
-    assertThat("Aged brie quality updated correctly after sellIn.", app.items[0].quality, is(equalTo(quality_agedBrie)));
+    assertThat("2. Aged brie quality updated correctly after sellIn.", app.items[0].quality, is(equalTo(quality_agedBrie)));
   }
 
   @Test

@@ -15,8 +15,14 @@ public class Conjured extends Item{
     //      throw new Exception("Quality must be positive.");
     //    }
   }
-
+  //TODO: corriger mutations
   @Override
   public void updateQuality(){
+    if (this.sellIn >= 0){
+      this.quality = Math.max(this.quality-2, 0);
+    } else{
+      this.quality = Math.max(this.quality-4, 0);
+    }
+    if (quality < 0 ){this.quality=0;}
   }
 }
