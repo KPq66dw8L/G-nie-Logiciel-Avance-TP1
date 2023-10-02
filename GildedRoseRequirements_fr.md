@@ -39,3 +39,34 @@ Cependant, nous devons vous prévenir, ne devez modifier en aucun cas la classe 
 (Vous pouvez ajouter une méthode `updateQuality` et des propriétés statiques dans la classe `Item` si vous voulez, nous vous couvrirons)
 
 Juste une précision, un produit ne peut jamais voir sa qualité augmenter au-dessus de 50, cependant "Sulfuras" est un objet légendaire et comme tel sa qualité est de 80 et il ne change jamais.
+
+----
+# Résumé - Rose dorée (Gilded Rose)
+
+- **Objectif :** Mise à jour de l'inventaire et ajout de fonctionnalités.
+
+## Système actuel :
+- **sellIn** : Jours restants pour vendre l'article.
+- **quality** : Valeur représentant la qualité de l'article.
+- Chaque jour :
+  - `sellIn` et `quality` diminuent.
+  - Après date péremption : `quality` diminue 2x plus vite.
+  - `quality` toujours entre 0 et 50 (sauf exceptions).
+
+### Règles par produit :
+- **Aged Brie** : `quality` augmente avec le temps.
+- **Sulfuras** :
+  - Objet légendaire.
+  - Pas de date de péremption.
+  - `quality` fixe à 80.
+- **Backstage passes** :
+  - `quality` augmente avec temps.
+  - +2 à `quality` si `sellIn` <= 10.
+  - +3 à `quality` si `sellIn` <= 5.
+  - `quality` = 0 après le concert.
+- **Conjured** : `quality` diminue 2x plus vite que normal.
+
+## Contraintes développement :
+- Possible modification/ajout à `updateQuality`.
+- **Ne pas** modifier classe `Item` (risque avec gobelin).
+  - Ajout à `Item` permis si nécessaire.
