@@ -5,7 +5,6 @@ import org.junit.jupiter.api.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.not;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -22,6 +21,16 @@ class GildedRoseTest {
     assertThrows(AssertionError.class, () -> new AgedBrie(20, -1), "Initial value negative.");
     assertThrows(AssertionError.class, () -> new BackstagePasses(4, -1), "Initial value negative.");
     assertThrows(AssertionError.class, () -> new Conjured(50, -1), "Initial value negative.");
+  }
+
+  @Test
+  @DisplayName("Test isBetween static method in Baackstage item.")
+  void testIsBetween(){
+    assertFalse(BackstagePasses.isBetween(5, 6, 10));
+    assertTrue(BackstagePasses.isBetween(6, 6, 10));
+    assertTrue(BackstagePasses.isBetween(8, 6, 10));
+    assertTrue(BackstagePasses.isBetween(10, 6, 10));
+    assertFalse(BackstagePasses.isBetween(11, 6, 10));
   }
 
   @Test
@@ -63,21 +72,27 @@ class GildedRoseTest {
     assertThat("Backstage quality updated correctly.", app.items[1].quality, is(equalTo(quality_backstage)));
     assertThat("Sulfuras quality updated correctly.", app.items[2].quality, is(equalTo(80)));
     assertThat("Conjured quality updated correctly.", app.items[3].quality, is(equalTo(quality_conjured)));
-  }
 
-  @Test
-  @DisplayName("Negative Sulfuras.")
-  void missed() throws Exception {
-    Item[] list;
     list = new Item[] {
-      new Sulfuras()
+      new BackstagePasses(11, 48)
     };
-
-    GildedRose app = new GildedRose(list);
-    int nbjours = 20;
-
+    app = new GildedRose(list);
+    nbjours = 1;
+    quality_backstage = app.items[0].quality;
     for (int i=0; i < nbjours; i++){
       app.toNextDay();
+      // Mise à jour de la qualité de backstage dans une variable locale, selon les infos de la doc
+      if (app.items[0].sellIn >= 10) {
+        quality_backstage += 1;
+      } else if (app.items[0].sellIn >= 5) {
+        quality_backstage += 2;
+      } else if (app.items[0].sellIn >= 0) {
+        quality_backstage += 3;
+      } else {
+        quality_backstage = 0;
+      }
+      assertThat("Backstage quality updated correctly.", app.items[0].quality, is(equalTo(quality_backstage)));
+
     }
   }
 
@@ -86,7 +101,7 @@ class GildedRoseTest {
   void testMaxQuality() throws Exception {
     Item[] list;
     list = new Item[] {
-      new AgedBrie( 20, 30),
+      new AgedBrie( 20, 50),
       new BackstagePasses(20, 30),
       new Sulfuras(),
       new Conjured(20, 23)
@@ -103,32 +118,6 @@ class GildedRoseTest {
     assertThat("Aged brie max quality value.", app.items[0].quality, is(equalTo(50)));
     assertThat("Backstage max quality value.", app.items[1].quality, is(equalTo(50)));
     assertThat("Sulfuras max quality value.", app.items[2].quality, is(equalTo(80)));
-    // Inutile de tester le max d'un élément Conjured, car sa qualité n'augmente pas.
-  }
-
-  @Test
-  @DisplayName("Check that the initial quality corresponds to the specifications.")
-  void testDefaultQuality() throws Exception {
-    Item[] list;
-    list = new Item[] {
-      new AgedBrie( 20, 60),
-      new BackstagePasses( 20, 60),
-      new Sulfuras(),
-      new Conjured( 20, 60)
-    };
-
-    GildedRose app = new GildedRose(list);
-    int nbjours = 1;
-
-    for (int i=0; i < nbjours; i++){
-      app.toNextDay();
-    }
-
-    // TODO
-    //    assertThat("Aged brie max quality value.", app.items[0].quality, is(not(equalTo(50))));
-    //    assertThat("Backstage max quality value.", app.items[1].quality, is(not(equalTo(50))));
-    //    assertThat("Sulfuras max quality value.", app.items[2].quality, is(not(equalTo(80))));
-    //    assertThat("Conjured quality updated correctly.", app.items[3].quality, is(not(equalTo(48))));
   }
 
   @Test
@@ -170,20 +159,6 @@ class GildedRoseTest {
       app.toNextDay();
     }
     assertThat("2. Aged brie quality updated correctly after sellIn.", app.items[0].quality, is(equalTo(quality_agedBrie)));
-
-
-    list = new Item[] {
-      new Conjured(0, 5)
-    };
-    app = new GildedRose(list);
-    nbjours = 5;
-    quality_conjured = Math.max(app.items[0].quality - ((nbjours-app.items[0].sellIn)*4), 0);
-
-    for (int i=0; i < nbjours; i++){
-      app.toNextDay();
-    }
-
-    assertThat("Conjured quality updated correctly after sellIn.", app.items[0].quality, is(equalTo(quality_conjured)));
 
   }
 

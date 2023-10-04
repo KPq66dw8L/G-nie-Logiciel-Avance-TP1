@@ -14,7 +14,6 @@ public class AgedBrie extends Item{
           throw new AssertionError("Quality must be positive.");
         }
   }
-  //TODO: corriger mutations
   @Override
   public void updateQuality(){
     if (quality < 50){

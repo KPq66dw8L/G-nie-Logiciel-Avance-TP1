@@ -14,7 +14,6 @@ public class Conjured extends Item{
           throw new AssertionError("Quality must be positive.");
         }
   }
-  //TODO: corriger mutations
   @Override
   public void updateQuality(){
     if (this.sellIn > -1){
