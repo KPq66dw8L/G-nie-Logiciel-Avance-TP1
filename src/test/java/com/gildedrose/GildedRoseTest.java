@@ -12,6 +12,19 @@ import static org.junit.jupiter.api.Assertions.*;
 class GildedRoseTest {
 
   @Test
+  @DisplayName("Check the initial values.")
+  void testInitialValues() throws Exception {
+
+    assertThrows(AssertionError.class, () -> new AgedBrie(20, -30), "Initial value negative.");
+    assertThrows(AssertionError.class, () -> new BackstagePasses(4, -48), "Initial value negative.");
+    assertThrows(AssertionError.class, () -> new Conjured(50, -23), "Initial value negative.");
+
+    assertThrows(AssertionError.class, () -> new AgedBrie(20, -1), "Initial value negative.");
+    assertThrows(AssertionError.class, () -> new BackstagePasses(4, -1), "Initial value negative.");
+    assertThrows(AssertionError.class, () -> new Conjured(50, -1), "Initial value negative.");
+  }
+
+  @Test
   @DisplayName("Check that the quality updates correctly before the sellIn.")
   void testQualityUpdateBeforeSellIn() throws Exception {
     Item[] list;
@@ -66,11 +79,6 @@ class GildedRoseTest {
     for (int i=0; i < nbjours; i++){
       app.toNextDay();
     }
-
-    //TODO: sulfuras quality neg doit renvoyer une erreur
-    // assertThrows(IllegalAccessException.class, () -> app.toNextDay();(), "");
-
-
   }
 
   @Test
@@ -161,8 +169,22 @@ class GildedRoseTest {
     for (int i=0; i < nbjours; i++){
       app.toNextDay();
     }
-
     assertThat("2. Aged brie quality updated correctly after sellIn.", app.items[0].quality, is(equalTo(quality_agedBrie)));
+
+
+    list = new Item[] {
+      new Conjured(0, 5)
+    };
+    app = new GildedRose(list);
+    nbjours = 5;
+    quality_conjured = Math.max(app.items[0].quality - ((nbjours-app.items[0].sellIn)*4), 0);
+
+    for (int i=0; i < nbjours; i++){
+      app.toNextDay();
+    }
+
+    assertThat("Conjured quality updated correctly after sellIn.", app.items[0].quality, is(equalTo(quality_conjured)));
+
   }
 
   @Test

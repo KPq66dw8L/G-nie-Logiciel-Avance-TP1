@@ -8,18 +8,17 @@ import static org.hamcrest.Matchers.not;
 public class AgedBrie extends Item{
   public AgedBrie(int sellIn, int quality) throws Exception {
     super("Aged Brie", sellIn, quality);
-    //TODO
-    //    try {
-    //      assertThat("Quality must be positive.", quality>=0);
-    //    } catch (Exception e){
-    //      throw new Exception("Quality must be positive.");
-    //    }
+        try {
+          assertThat("Quality must be positive.", quality>-1);
+        } catch (AssertionError e){
+          throw new AssertionError("Quality must be positive.");
+        }
   }
   //TODO: corriger mutations
   @Override
   public void updateQuality(){
     if (quality < 50){
-      if (this.sellIn >= 0){
+      if (this.sellIn > -1){
         this.quality ++;
       } else{
         this.quality = Math.min(this.quality+2, 50);
